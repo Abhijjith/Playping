@@ -1,0 +1,194 @@
+<html>
+<head>
+<title> PING PONG </title>
+</head>
+<body>
+<canvas id="myCanvas" width="1300" height="600" style="border:1px solid #d3d3d3;"></canvas>
+<script>
+
+//Initializing all the required vbles for canvas operation. 
+var c;
+var ctx,ctx1,ctx2,ctx3;
+var dx1 = 15;
+var dy2 = 20;
+var dy3 = 20;
+var x1 = 325;
+var x2 = 280;
+var x3 = 800; 
+var y1 = 350;
+var y2 = 325;
+var y3 = 325;
+var WIDTH = 500;
+var HEIGHT = 300;
+
+
+window.onload=init();   
+window.addEventListener('keydown',KeyDown,true);   //for detecting the key press. only up or down for the paddle mevemnt
+
+
+
+
+function init() 
+{
+c = document.getElementById("myCanvas");
+ctx = c.getContext("2d");
+ctx1 = c.getContext("2d");
+ctx2 = c.getContext("2d");
+ctx3 = c.getContext("2d");
+drawrect1(x2,y2,20,50);
+drawrect2(x3,y3,20,50);
+return setInterval(draw, 50);               // at 50ms time gap.
+}
+
+
+
+
+
+function draw()
+{ 
+WIDTH = 500;
+HEIGHT = 300;
+ctx.clearRect(0,170,1400,400);
+ctx.fillStyle="black";
+ctx.fillRect(300,200,WIDTH,HEIGHT);
+draw1();
+drawrect1(x2,y2,20,50);
+drawrect2(x3,y3,20,50);
+
+}
+
+var flag=1;
+var score=0;                             //no of hits
+
+function draw1()
+{  
+	if(x1==790)                         //boundary condition
+	{
+	if(y3>320 && y3<380)                 //if ball collides with paddle2
+    flag=0;
+    else if(!(y3>320 && y3<380))
+    {
+    	alert("player1 wins");
+        alert(score);
+       
+    }
+    }   
+     
+    else if(x1==310)                   //boundary conditiion
+    { 
+    if(y2>320 && y2<380)                //if ball collides with paddle1
+    flag=1;
+    else if(!(y2>320 && y2<380))
+    {
+        alert("player2 wins");
+        alert(score);
+        
+    }
+    }    
+
+    if (flag==1)  
+	{
+		x1 += dx1;                                  //moving the ball to the right
+		if(x1>310 && x1<330)
+		{
+			y3 =  Math.random()*(470-230)+230;           //random position for paddle2
+			score++;                                        //increasing the no of hits
+		}
+	}
+    else if(flag==0)
+    {
+    	x1 -= dx1;                                     //moving the ball to the left
+    	if(x1>770 && x1<790)
+    	{
+    	y2 = Math.random()*(470-230)+230;                 //random position for paddle1
+    	score++;
+    }
+    }
+   
+
+   drawcircle(x1,y1,10);
+
+}
+
+function drawcircle(x,y,r)
+{
+ctx3.beginPath();
+ctx3.arc(x, y, r, 0, Math.PI*2, true);
+
+if(x1<310 || x1>790)
+ctx3.fillStyle="white";
+else
+ctx3.fillStyle="red";
+ctx3.fill();
+}
+
+
+function drawrect1(x,y,w,h) 
+{
+
+ctx1.fillStyle="#d3d3d3";
+ctx1.fillRect(x,y,w,h);
+}
+
+function drawrect2(x,y,w,h) 
+{
+ctx2.fillStyle="#d3d3d3";
+ctx2.fillRect(x,y,w,h);
+}
+
+
+function KeyDown(event)
+{
+
+if(x1<550)                               //control of paddle1
+{
+switch (event.keyCode)
+{ case 38:  /* Up arrow was pressed */
+if (y2  > 205)
+{
+y2 -= dy2;
+
+}
+break;
+case 40:  /* Down arrow was pressed */
+if (y2  < 455)
+{
+y2 += dy2;
+
+
+}
+break;
+
+}
+}
+
+if(x1>550)                                           //control of paddle2
+{
+	switch (event.keyCode)
+{ case 38:  /* Up arrow was pressed */
+if (y3  > 205)
+{
+y3 -= dy3;
+
+
+}
+break;
+case 40:  /* Down arrow was pressed */
+if (y3  < 455)
+{
+y3 += dy3;
+
+
+}
+break;
+
+}
+}
+}
+
+
+
+
+</script>
+</body>
+</html>
